@@ -30,7 +30,9 @@ var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
-const _ = proto.ProtoPackageIsVersion1
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type Empty struct {
 }
@@ -60,7 +62,7 @@ var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion1
+const _ = grpc.SupportPackageIsVersion3
 
 // Client API for GetTime service
 
@@ -95,16 +97,22 @@ func RegisterGetTimeServer(s *grpc.Server, srv GetTimeServer) {
 	s.RegisterService(&_GetTime_serviceDesc, srv)
 }
 
-func _GetTime_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _GetTime_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(GetTimeServer).Get(ctx, in)
-	if err != nil {
-		return nil, err
+	if interceptor == nil {
+		return srv.(GetTimeServer).Get(ctx, in)
 	}
-	return out, nil
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/time.GetTime/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GetTimeServer).Get(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _GetTime_serviceDesc = grpc.ServiceDesc{
@@ -116,8 +124,11 @@ var _GetTime_serviceDesc = grpc.ServiceDesc{
 			Handler:    _GetTime_Get_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: fileDescriptor0,
 }
+
+func init() { proto.RegisterFile("time.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
 	// 104 bytes of a gzipped FileDescriptorProto
