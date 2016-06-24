@@ -33,4 +33,50 @@ Time is: 2016-05-05 14:14:45.241
 # 
 ```
 
+## Usage
+
+### Server
+
+```
+$ ./timeServer -h
+Usage of ./timeServer:
+  -addr string
+        addr to listen(default to all interface) (default "0.0.0.0")
+  -author
+        Show author.
+  -consuladdr string
+        registry addr(default to localhost)
+  -consulport string
+        registry addr(default to 8500)
+  -port string
+        port to listen (default "50051")
+  -v    Show version.
+```
+
+### Client
+
+```
+$ ./timeClient -h
+Usage of ./timeClient:
+  -addr string
+        addr to connect(default is localhost)
+  -author
+        Show author.
+  -port string
+        port to connect
+  -v    Show version.
+```
+
+## Service registering and discovery
+
+It now support consul service register ( from server ) and discovery ( from client )
+
+### New service
+
+![New service](doc/new_service.png)
+
+### Service check
+
+![Service check](doc/service_check.png)
+
 更多信息可参考源代码
